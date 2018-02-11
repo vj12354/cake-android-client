@@ -41,11 +41,16 @@ class DataLoader extends AsyncTask<String, Void, JSONArray> {
     @Override
     protected void onPostExecute(JSONArray array) {
         super.onPostExecute(array);
-        if (array == null) {
-            Toast.makeText(placeholderFragment.getActivity(), "Unable retrieve JSON data..", Toast.LENGTH_SHORT).show();
-        } else {
-            placeholderFragment.mAdapter.setItems(array);
-            placeholderFragment.mAdapter.notifyDataSetChanged();
+        try {
+            if (array == null) {
+                Toast.makeText(placeholderFragment.getActivity(), "Unable retrieve JSON data..", Toast.LENGTH_SHORT).show();
+            } else {
+                placeholderFragment.mAdapter.setItems(array);
+                placeholderFragment.mAdapter.notifyDataSetChanged();
+            }
+            placeholderFragment.setListShown(true);
+        } catch (Exception e) {
+            Log.d(TAG, "Error: "+e.getMessage());
         }
     }
 

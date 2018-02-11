@@ -9,21 +9,13 @@ import com.waracle.androidtest.ui.PlaceholderFragment;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    public static String JSON_URL = "https://gist.githubusercontent.com/hart88/198f29ec5114a3ec3460/" +
-            "raw/8dd19a88f9b8d24c23d9960f3300d0c917a4f07c/cake.json";
     private PlaceholderFragment placeholderFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            placeholderFragment = new PlaceholderFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, placeholderFragment)
-                    .commit();
-        }
+        placeholderFragment = (PlaceholderFragment) getSupportFragmentManager().findFragmentById(R.id.placeholder_fragment);
     }
 
     @Override
@@ -42,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            placeholderFragment.refresh(JSON_URL);
+            placeholderFragment.refresh();
             return true;
         }
 
