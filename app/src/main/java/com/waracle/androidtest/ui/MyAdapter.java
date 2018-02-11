@@ -23,6 +23,11 @@ import org.json.JSONObject;
 public class MyAdapter extends BaseAdapter {
 
     // Can you think of a better way to represent these items???
+
+    /*
+    Answer:
+    You could have a POJO / model class, lets say Cake with { title, image, desc } attributes
+     */
     private JSONArray mItems;
     private FragmentActivity activity;
 

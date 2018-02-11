@@ -43,7 +43,8 @@ class DataLoader extends AsyncTask<String, Void, JSONArray> {
         super.onPostExecute(array);
         try {
             if (array == null) {
-                Toast.makeText(placeholderFragment.getActivity(), "Unable retrieve JSON data..", Toast.LENGTH_SHORT).show();
+                Toast.makeText(placeholderFragment.getActivity(),
+                        "Unable retrieve JSON data..", Toast.LENGTH_SHORT).show();
             } else {
                 placeholderFragment.mAdapter.setItems(array);
                 placeholderFragment.mAdapter.notifyDataSetChanged();
@@ -62,9 +63,18 @@ class DataLoader extends AsyncTask<String, Void, JSONArray> {
 
             // Can you think of a way to improve the performance of loading data
             // using HTTP headers???
+            /*
+            Answer:
+                You could enable Http Response caching, to load from cache instead of downloading from network each time.
+
+            Also Would suggest using library such as retrofit, volley, OkHttp to retrieve JSON data into a List<Cake>
+            that would be a lot simpler.
+             */
 
             // Also, Do you trust any utils thrown your way????
 
+
+            /* Answer: Not sure */
             byte[] bytes = StreamUtils.readUnknownFully(in);
 
             // Read in charset of HTTP content.

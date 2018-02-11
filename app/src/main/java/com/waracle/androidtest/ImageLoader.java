@@ -53,6 +53,13 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap> {
         // Can you think of a way to improve loading of bitmaps
         // that have already been loaded previously??
 
+        /*
+        Answer:
+        We could optimise the image loading for a smoother experience by using some kind of ViewHolder & cache (LRU Cache)
+        Here is one example:
+        https://dzone.com/articles/android-listview-optimizations-0
+         */
+
         try {
             return convertToBitmap(loadImageData(url));
         } catch (IOException e) {
@@ -75,6 +82,10 @@ public class ImageLoader extends AsyncTask<String, Void, Bitmap> {
 
             // Can you think of a way to make the entire
             // HTTP more efficient using HTTP headers??
+
+            /*
+            Answer: you could enable Http Response caching, to load from cache instead of downloading each time.
+             */
 
             return StreamUtils.readUnknownFully(inputStream);
         } finally {
