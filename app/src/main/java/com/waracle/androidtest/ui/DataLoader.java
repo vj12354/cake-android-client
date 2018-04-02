@@ -1,37 +1,43 @@
 package com.waracle.androidtest.ui;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.waracle.androidtest.StreamUtils;
+import com.waracle.androidtest.data.Cake;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by vijay on 11/02/2018.
  */ // Async Task to perform data loading from network.
-class DataLoader extends AsyncTask<String, Void, JSONArray> {
+class DataLoader extends AsyncTask<String, Void, List<Cake>> {
 
     private static final String TAG = DataLoader.class.getSimpleName();
 
-    private PlaceholderFragment placeholderFragment;
+    private final PlaceholderFragment placeholderFragment;
 
     public DataLoader(PlaceholderFragment placeholderFragment) {
         this.placeholderFragment = placeholderFragment;
     }
 
     @Override
-    protected JSONArray doInBackground(String... strings) {
+    protected List<Cake> doInBackground(String... strings) {
         try {
-            return loadData(strings[0]);
+            JSONArray jsonArray = loadData(strings[0]);
+            return getJsonArrayAsList(jsonArray);
         } catch (IOException | JSONException e) {
             Log.e(TAG, e.getMessage());
             return null;
@@ -39,7 +45,7 @@ class DataLoader extends AsyncTask<String, Void, JSONArray> {
     }
 
     @Override
-    protected void onPostExecute(JSONArray array) {
+    protected void onPostExecute(List<Cake> array) {
         super.onPostExecute(array);
         try {
             if (array == null) {
@@ -53,6 +59,20 @@ class DataLoader extends AsyncTask<String, Void, JSONArray> {
         } catch (Exception e) {
             Log.d(TAG, "Error: "+e.getMessage());
         }
+    }
+
+    @NonNull
+    private List<Cake> getJsonArrayAsList(JSONArray jsonArray) throws JSONException {
+        List<Cake> cakes = new ArrayList<>();
+        for (int index = 0; index < jsonArray.length(); index++) {
+            JSONObject object = jsonArray.getJSONObject(index);
+            Cake cake = new Cake();
+            cake.setTitle(object.getString("title"));
+            cake.setDesc(object.getString("desc"));
+            cake.setUrl(object.getString("image"));
+            cakes.add(cake);
+        }
+        return cakes;
     }
 
     private JSONArray loadData(String jsonURL) throws IOException, JSONException {
@@ -94,7 +114,7 @@ class DataLoader extends AsyncTask<String, Void, JSONArray> {
      * Returns the charset specified in the Content-Type of this header,
      * or the HTTP default (ISO-8859-1) if none can be found.
      */
-    public String parseCharset(String contentType) {
+    private String parseCharset(String contentType) {
         if (contentType != null) {
             String[] params = contentType.split(",");
             for (int i = 1; i < params.length; i++) {

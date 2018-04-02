@@ -9,7 +9,8 @@
         android:id="@+id/image"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:padding="4dp"/>
+        android:padding="4dp"
+        android:src="@drawable/ic_sync_problem_black_24dp"/>
 
 
     <RelativeLayout

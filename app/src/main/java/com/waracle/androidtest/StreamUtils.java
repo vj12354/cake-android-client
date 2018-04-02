@@ -2,10 +2,10 @@ package com.waracle.androidtest;
 
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 
 /**
  * Created by Riad on 20/05/2015.
@@ -16,23 +16,20 @@ public class StreamUtils {
     // Can you see what's wrong with this???
     public static byte[] readUnknownFully(InputStream stream) throws IOException {
         // Read in stream of bytes
-        ArrayList<Byte> data = new ArrayList<>();
+        ByteArrayOutputStream byteArrayOS = new ByteArrayOutputStream();
         while (true) {
-            int result = stream.read();
-            if (result == -1) {
+            byte[] bytes = new byte[1024];
+            int count = stream.read(bytes, 0, 1024);
+            if (count == -1) {
                 break;
+            } else {
+                byteArrayOS.write(bytes, 0, count);
             }
-            data.add((byte) result);
         }
 
-        // Convert ArrayList<Byte> to byte[]
-        byte[] bytes = new byte[data.size()];
-        for (int i = 0; i < bytes.length; i++) {
-            bytes[i] = data.get(i);
-        }
-
-        // Return the raw byte array.
-        return bytes;
+        byteArrayOS.flush();
+        byteArrayOS.close();
+        return byteArrayOS.toByteArray();
     }
 
     public static void close(Closeable closeable) {
